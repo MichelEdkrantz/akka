@@ -597,9 +597,7 @@ private[akka] class RemoteActorRef private[akka] (
    */
   def isWatchIntercepted(watchee: ActorRef, watcher: ActorRef) =
     if (watchee.path.uid == akka.actor.ActorCell.undefinedUid) {
-      provider.log.debug(
-        "actorFor is deprecated, and watching a remote ActorRef acquired with actorFor is not reliable: [{}]",
-        watchee.path)
+      provider.log.warning("Watching a remote ActorRef with undefinedUid is not reliable: [{}]", watchee.path)
       false // Not managed by the remote watcher, so not reliable to communication failure or remote system crash
     } else {
       // If watchee != this then watcher should == this. This is a reverse watch, and it is not intercepted
