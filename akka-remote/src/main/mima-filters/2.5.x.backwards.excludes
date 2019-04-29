@@ -1,0 +1,4 @@
+# #26190 remove actorFor
+ProblemFilters.exclude[DirectMissingMethodProblem]("akka.remote.RemoteActorRefProvider.actorFor")
+ProblemFilters.exclude[DirectMissingMethodProblem]("akka.remote.RemoteActorRefProvider.actorFor")
+ProblemFilters.exclude[DirectMissingMethodProblem]("akka.remote.RemoteActorRefProvider.actorFor")

@@ -375,52 +375,6 @@ private[akka] class RemoteActorRefProvider(
       }
     }
 
-  @deprecated("use actorSelection instead of actorFor", "2.2")
-  override private[akka] def actorFor(path: ActorPath): InternalActorRef = {
-    if (hasAddress(path.address)) actorFor(rootGuardian, path.elements)
-    else
-      try {
-        new RemoteActorRef(
-          transport,
-          transport.localAddressForRemote(path.address),
-          path,
-          Nobody,
-          props = None,
-          deploy = None)
-      } catch {
-        case NonFatal(e) =>
-          log.error(e, "Error while looking up address [{}]", path.address)
-          new EmptyLocalActorRef(this, path, eventStream)
-      }
-  }
-
-  @deprecated("use actorSelection instead of actorFor", "2.2")
-  override private[akka] def actorFor(ref: InternalActorRef, path: String): InternalActorRef = path match {
-    case ActorPathExtractor(address, elems) =>
-      if (hasAddress(address)) actorFor(rootGuardian, elems)
-      else {
-        val rootPath = RootActorPath(address) / elems
-        try {
-          new RemoteActorRef(
-            transport,
-            transport.localAddressForRemote(address),
-            rootPath,
-            Nobody,
-            props = None,
-            deploy = None)
-        } catch {
-          case NonFatal(e) =>
-            log.error(e, "Error while looking up address [{}]", rootPath.address)
-            new EmptyLocalActorRef(this, rootPath, eventStream)
-        }
-      }
-    case _ => local.actorFor(ref, path)
-  }
-
-  @deprecated("use actorSelection instead of actorFor", "2.2")
-  override private[akka] def actorFor(ref: InternalActorRef, path: Iterable[String]): InternalActorRef =
-    local.actorFor(ref, path)
-
   def rootGuardianAt(address: Address): ActorRef = {
     if (hasAddress(address)) rootGuardian
     else

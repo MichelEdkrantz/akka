@@ -79,9 +79,11 @@ akka {
 
   "receive Terminated when watched node is unknown host" in {
     val path = RootActorPath(Address(protocol, system.name, "unknownhost", 2552)) / "user" / "subject"
+
+    @silent
+    val watchee = RARP(system).provider.resolveActorRef(path)
+
     system.actorOf(Props(new Actor {
-      @silent
-      val watchee = context.actorFor(path)
       context.watch(watchee)
       def receive = {
         case t: Terminated => testActor ! t.actor.path
