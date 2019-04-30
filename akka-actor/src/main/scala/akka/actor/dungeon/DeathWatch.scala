@@ -24,8 +24,6 @@ private[akka] trait DeathWatch { this: ActorCell =>
 
   override final def watch(subject: ActorRef): ActorRef = subject match {
     case a: InternalActorRef =>
-      if (subject.path.uid == 0)
-        println(s"# undefinedUid watch $self -> $subject ${subject.getClass.getName}") // FIXME
       if (a != self) {
         if (!watching.contains(a))
           maintainAddressTerminatedSubscription(a) {
@@ -39,8 +37,6 @@ private[akka] trait DeathWatch { this: ActorCell =>
 
   override final def watchWith(subject: ActorRef, msg: Any): ActorRef = subject match {
     case a: InternalActorRef =>
-      if (subject.path.uid == 0)
-        println(s"# undefinedUid watchWith $self -> $subject ${subject.getClass.getName}") // FIXME
       if (a != self) {
         if (!watching.contains(a))
           maintainAddressTerminatedSubscription(a) {
@@ -54,8 +50,6 @@ private[akka] trait DeathWatch { this: ActorCell =>
 
   override final def unwatch(subject: ActorRef): ActorRef = subject match {
     case a: InternalActorRef =>
-      if (subject.path.uid == 0)
-        println(s"# undefinedUid unwatch $self -> $subject ${subject.getClass.getName}") // FIXME
       if (a != self && watching.contains(a)) {
         a.sendSystemMessage(Unwatch(a, self)) // ➡➡➡ NEVER SEND THE SAME SYSTEM MESSAGE OBJECT TO TWO ACTORS ⬅⬅⬅
         maintainAddressTerminatedSubscription(a) {
@@ -80,8 +74,6 @@ private[akka] trait DeathWatch { this: ActorCell =>
       actor: ActorRef,
       existenceConfirmed: Boolean,
       addressTerminated: Boolean): Unit = {
-    if (actor.path.uid == 0)
-      println(s"# undefinedUid watchedActorTerminated $self -> $actor ${actor.getClass.getName}") // FIXME
     watching.get(actor) match {
       case None => // We're apparently no longer watching this actor.
       case Some(optionalMessage) =>
