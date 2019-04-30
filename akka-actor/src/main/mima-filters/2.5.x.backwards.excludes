@@ -23,3 +23,5 @@ ProblemFilters.exclude[DirectMissingMethodProblem]("akka.actor.ActorSystem.actor
 ProblemFilters.exclude[DirectMissingMethodProblem]("akka.actor.ActorRefProvider.actorFor")
 ProblemFilters.exclude[DirectMissingMethodProblem]("akka.actor.ActorRefProvider.actorFor")
 ProblemFilters.exclude[DirectMissingMethodProblem]("akka.actor.ActorRefProvider.actorFor")
+ProblemFilters.exclude[DirectMissingMethodProblem]("akka.actor.ChildActorPath.this")
+ProblemFilters.exclude[MissingClassProblem]("akka.actor.dungeon.UndefinedUidActorRef")
